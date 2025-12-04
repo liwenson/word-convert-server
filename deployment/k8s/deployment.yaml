@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: word-convert
+  namespace: devops
+  labels:
+    app: word-convert
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: word-convert
+  template:
+    metadata:
+      labels:
+        app: word-convert
+    spec:
+      containers:
+        - name: word-convert
+          image: harbor.test.net/devops/wordconvert:20251204145304
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1024Mi"
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+          env:
+            - name: JAVA_OPTS
+              value: "-Xms512m -Xmx1024m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          volumeMounts:
+            - mountPath: /config
+              name: config
+      volumes:
+        - name: config
+          configMap:
+            name: word-convert-config

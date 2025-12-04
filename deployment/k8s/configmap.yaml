@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: word-convert-config
+data:
+  application.properties: |
+    server.port=8080
+    spring.servlet.multipart.max-file-size=50MB
+    spring.servlet.multipart.max-request-size=50MB
