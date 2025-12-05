@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文档预览</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: #fff;
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            color: #333;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            background: #1890ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background: #40a9ff;
+        }
+
+        .preview-container {
+            width: 100%;
+            height: calc(100vh - 60px);
+            padding: 20px;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+
+        .error {
+            text-align: center;
+            padding: 50px;
+            color: #f5222d;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>文档预览</h1>
+    <div>
+        <a th:href="@{/api/convert/preview/{id}(id=${previewId})}"
+           class="btn" download="document.pdf">下载文档</a>
+    </div>
+</div>
+
+<div class="preview-container">
+    <iframe
+            th:src="@{/api/convert/preview/{id}(id=${previewId})}"
+            class="pdf-viewer"
+            id="pdfViewer">
+    </iframe>
+</div>
+
+<script>
+    // 监听 iframe 加载错误
+    document.getElementById('pdfViewer').addEventListener('error', function() {
+        document.querySelector('.preview-container').innerHTML =
+            '<div class="error">预览加载失败,请尝试下载查看</div>';
+    });
+</script>
+</body>
+</html>

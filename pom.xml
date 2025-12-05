@@ -32,6 +32,10 @@
             <artifactId>spring-boot-starter-json</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
         <!-- 只需要添加依赖,在 K8s 环境中会自动检测并启用探针 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
